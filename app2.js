@@ -7,6 +7,7 @@ const MONGODB_URI = "mongodb+srv://dbuser123:dbuser123@cluster0.th0qwsg.mongodb.
 var port = process.env.PORT || 3000;
 // var port = 8080;
 
+console.log("At the start");
 
 http.createServer(async function (req, res) {
     res.writeHead(200, { 'Content-Type': 'text/html' });
