@@ -11,6 +11,7 @@ var port = process.env.PORT || 3000;
 console.log("Here Now");
 
 http.createServer(async function (req, res) {
+    console.log("Made it it The try");
     try {
         console.log("Made it it The try");
         res.writeHead(200, { 'Content-Type': 'text/html' });
