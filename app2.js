@@ -8,6 +8,8 @@ const MongoClient = require('mongodb').MongoClient;
 const MONGODB_URI = "mongodb+srv://dbuser123:dbuser123@cluster0.th0qwsg.mongodb.net/?retryWrites=true&w=majority";
 var port = process.env.PORT || 3000;
 
+console.log("Here Now");
+
 http.createServer(async function (req, res) {
     try {
         res.writeHead(200, { 'Content-Type': 'text/html' });
