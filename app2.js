@@ -10,6 +10,7 @@ var port = process.env.PORT || 3000;
 
 console.log("Here Now");
 
+console.log("Right out the try");
 http.createServer(async function (req, res) {
     console.log("Made it it The try");
     try {
