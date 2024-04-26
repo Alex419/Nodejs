@@ -10,7 +10,7 @@ console.log("Right outside of the try");
 
 http.createServer(async function (req, res) {
     console.log("made it in");
-    try {
+    // try {
         console.log("Made it it The try");
         res.writeHead(200, { 'Content-Type': 'text/html' });
         var path = url.parse(req.url).pathname;
@@ -59,10 +59,10 @@ http.createServer(async function (req, res) {
             res.writeHead(404, { 'Content-Type': 'text/plain' });
             res.end('Not Found');
         }
-    } catch (error) {
-        console.log("In the catch");
-        console.error('Error processing request:', error);
-        res.writeHead(500, { 'Content-Type': 'text/plain' });
-        res.end('Internal Server Error');
-    }
+    // } catch (error) {
+    //     console.log("In the catch");
+    //     console.error('Error processing request:', error);
+    //     res.writeHead(500, { 'Content-Type': 'text/plain' });
+    //     res.end('Internal Server Error');
+    // }
 }).listen(port);
