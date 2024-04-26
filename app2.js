@@ -5,40 +5,33 @@ const MongoClient = require('mongodb').MongoClient;
 
 const MONGODB_URI = "mongodb+srv://dbuser123:dbuser123@cluster0.th0qwsg.mongodb.net/?retryWrites=true&w=majority";
 var port = process.env.PORT || 3000;
-// var port = 8080;
-
-console.log("At the start");
 
 http.createServer(async function (req, res) {
-    res.writeHead(200, { 'Content-Type': 'text/html' });
-    var path = url.parse(req.url).pathname;
+    try {
+        res.writeHead(200, { 'Content-Type': 'text/html' });
+        var path = url.parse(req.url).pathname;
 
-    if (req.url == "/") {
-        fs.readFile('home.html', (err, data) => {
-            if (err) {
-                res.writeHead(500, { 'Content-Type': 'text/plain' });
-                res.end('Internal Server Error');
-                return;
-            }
-            res.writeHead(200, { 'Content-Type': 'text/html' });
-            res.end(data);
-        });
-    } else if (path == "/process" && req.method === 'GET') {
-        try {
+        if (req.url == "/") {
+            fs.readFile('home.html', (err, data) => {
+                if (err) {
+                    res.writeHead(500, { 'Content-Type': 'text/plain' });
+                    res.end('Internal Server Error');
+                    return;
+                }
+                res.writeHead(200, { 'Content-Type': 'text/html' });
+                res.end(data);
+            });
+        } else if (path == "/process" && req.method === 'GET') {
             const parsedUrl = url.parse(req.url, true);
             const lookupKey = parsedUrl.query.lookup_key;
-    
-            console.log("Lookup Key:", lookupKey); 
-    
+
+            console.log("Lookup Key:", lookupKey);
+
             const client = await MongoClient.connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true });
             const db = client.db('Nodejs');
-    
-            // const documents = await db.collection('places').find({ place: lookupKey }).toArray(); // Retrieve all documents
-    
-            // const documents = await db.collection('places').find({ zips: lookupKey }).toArray();
-            // const documents = await db.collection('places').findOne({ $or: [{ place: lookupKey }, { zips: lookupKey }] });
 
-            if (lookupKey && isNaN(lookupKey.charAt(0))) { 
+            let documents;
+            if (lookupKey && isNaN(lookupKey.charAt(0))) {
                 documents = await db.collection('places').findOne({ place: lookupKey });
             } else {
                 documents = await db.collection('places').findOne({ zips: lookupKey });
@@ -58,17 +51,13 @@ http.createServer(async function (req, res) {
 
             res.write("<a href='/'>Back to Search Page</a>");
             res.end();
-
-            console.log("All Documents:", documents);
-    
-            res.writeHead(200, { 'Content-Type': 'application/json' });
-        } catch (error) {
-            console.error('Error processing request:', error);
-            res.writeHead(500, { 'Content-Type': 'text/plain' });
-            res.end('Internal Server Error');
+        } else {
+            res.writeHead(404, { 'Content-Type': 'text/plain' });
+            res.end('Not Found');
         }
-    } else {
-        res.writeHead(404, { 'Content-Type': 'text/plain' });
-        res.end('Not Found');
+    } catch (error) {
+        console.error('Error processing request:', error);
+        res.writeHead(500, { 'Content-Type': 'text/plain' });
+        res.end('Internal Server Error');
     }
 }).listen(port);
