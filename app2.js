@@ -8,7 +8,7 @@ var port = process.env.PORT || 3000;
 
 console.log("Right outside of the try");
 
-http.createServer(async function (req, res) {
+http.createServer(function (req, res) {
     console.log("made it in");
     try {
         console.log("Made it it The try");
@@ -31,16 +31,16 @@ http.createServer(async function (req, res) {
 
             console.log("Lookup Key:", lookupKey);
 
-            const client = await MongoClient.connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+            const client = MongoClient.connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true });
             const db = client.db('Nodejs');
 
             let documents;
             if (lookupKey && isNaN(lookupKey.charAt(0))) {
-                documents = await db.collection('places').findOne({ place: lookupKey });
+                documents = db.collection('places').findOne({ place: lookupKey });
             } else {
-                documents = await db.collection('places').findOne({ zips: lookupKey });
+                documents = db.collection('places').findOne({ zips: lookupKey });
             }
-            await client.close();
+            client.close();
 
             res.writeHead(200, { 'Content-Type': 'text/html' });
             res.write("<h1>Information about where you chose!</h1>");
