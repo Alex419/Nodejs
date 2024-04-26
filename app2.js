@@ -6,7 +6,8 @@ const MongoClient = require('mongodb').MongoClient;
 const MONGODB_URI = "mongodb+srv://dbuser123:dbuser123@cluster0.th0qwsg.mongodb.net/?retryWrites=true&w=majority";
 var port = process.env.PORT || 8080;
 
-http.createServer(async function (req, res) {
+http.createServer(function (req, res) {
+    console.log("made it in");
     try {
         console.log("Made it it The try");
         res.writeHead(200, { 'Content-Type': 'text/html' });
